@@ -9,22 +9,34 @@ class App extends Component {
       { id: "ad", title: "Germany" },
       { id: "ae", title: "Italy" },
       { id: "af", title: "Spain" },
-      { id: "ag", title: "Portugal" },
-      { id: "ah", title: "Austria" },
-      { id: "ai", title: "Denmark" },
-      { id: "au", title: "England" },
-      { id: "ak", title: "Ireland" }
+      { id: "ag", title: "Portugal" }
     ]
   };
 
-  render() {
-    let myData = (
-      <tr>
-        {this.state.tableData.map((data, index) => {
-          return <TableItem key={data.id} title={data.title} />;
-        })}
-      </tr>
+  deleteItemHandler = itemIndex => {
+    let promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(itemIndex + " was deleted");
+      }, 1000);
+    });
+
+    promise.then(
+      result => {
+        const items = [...this.state.tableData];
+        items.splice(itemIndex, 1);
+
+        this.setState({ tableData: items });
+      },
+      error => {
+        console.log('delete error');  
+      }
     );
+  };
+
+  render() {
+    let myData = this.state.tableData.map((data, index) => {
+          return <TableItem key={data.id} title={data.title} delete={() => this.deleteItemHandler(index) } />;
+    });
 
     return (
       <div className="App">
